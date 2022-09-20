@@ -23,7 +23,7 @@ public class ElevatorControllerImpl implements ElevatorController {
     }
 
     @Override
-    public ResponseEntity<Elevator> updateCall(UpdateElevator newData) {
+    public ResponseEntity<Elevator> updateElevatorState(UpdateElevator newData) {
         return ResponseEntity.ok(service.update(newData));
     }
 
