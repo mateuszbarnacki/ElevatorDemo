@@ -6,6 +6,7 @@ import com.example.demo.elevator.model.Elevator;
 import com.example.demo.elevator.model.UpdateElevator;
 import com.example.demo.elevator.service.api.ElevatorService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +20,7 @@ public class ElevatorControllerImpl implements ElevatorController {
     @Override
     public ResponseEntity<Void> pickup(Call call) {
         service.pickup(call);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Override
