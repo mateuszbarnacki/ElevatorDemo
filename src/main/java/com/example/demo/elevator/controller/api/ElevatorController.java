@@ -30,7 +30,7 @@ public interface ElevatorController {
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Update elevator state",
-            notes = "Method could change the current elevator level and the target elevator level." +
+            notes = "Method change the current elevator level and the target elevator level." +
                     "Current elevator route is deleted.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Elevator updated successfully"),
@@ -39,7 +39,7 @@ public interface ElevatorController {
     ResponseEntity<Elevator> updateElevatorState(@RequestBody UpdateElevator newData);
 
     @PutMapping("/step")
-    @ApiOperation(value = "Perform simulation step")
+    @ApiOperation(value = "Perform simulation step", notes = "Method moves each elevator")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Simulation step preformed successfully"),
             @ApiResponse(code = 500, message = "Server crashed")})
