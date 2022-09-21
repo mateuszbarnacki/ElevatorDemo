@@ -506,4 +506,193 @@ public class ElevatorManagementTest {
                 .hasFieldOrPropertyWithValue("currentLevel", 4)
                 .hasFieldOrPropertyWithValue("targetLevel", 4);
     }
+
+    @Test
+    public void elevatorGoUp_whenMoreThanOneCallInElevatorCallsList_thenAlgorithmCalculatesOptimalRoute() {
+        elevatorManagement.getElevator().setCurrentLevel(0);
+        elevatorManagement.getElevator().setTargetLevel(0);
+
+        Call firstCall = new Call(1, 2, 13);
+        Call secondCall = new Call(1, 9, 4);
+        Call thirdCall = new Call(1, 4, 6);
+        Call fourthCall = new Call(1, 6, 9);
+        Call fifthCall = new Call(1, 12, 10);
+
+        elevatorManagement.addElevatorCall(firstCall);
+        elevatorManagement.addElevatorCall(secondCall);
+        elevatorManagement.addElevatorCall(thirdCall);
+        elevatorManagement.addElevatorCall(fourthCall);
+        elevatorManagement.addElevatorCall(fifthCall);
+        // Optimal route should be: 2 -> 4 -> 6 -> 9 -> 13
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 2)
+                .hasFieldOrPropertyWithValue("targetLevel", 2);
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 4)
+                .hasFieldOrPropertyWithValue("targetLevel", 4);
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 6)
+                .hasFieldOrPropertyWithValue("targetLevel", 6);
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 9)
+                .hasFieldOrPropertyWithValue("targetLevel", 9);
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 13)
+                .hasFieldOrPropertyWithValue("targetLevel", 13);
+    }
+
+    @Test
+    public void elevatorGoDown_whenMoreThanOneCallInElevatorCallsList_thenAlgorithmCalculatesOptimalRoute() {
+        elevatorManagement.getElevator().setCurrentLevel(14);
+        elevatorManagement.getElevator().setTargetLevel(14);
+
+        Call firstCall = new Call(1, 11, 3);
+        Call secondCall = new Call(1, 9, 4);
+        Call thirdCall = new Call(1, 8, 3);
+        Call fourthCall = new Call(1, 6, 9);
+        Call fifthCall = new Call(1, 12, 10);
+
+        elevatorManagement.addElevatorCall(firstCall);
+        elevatorManagement.addElevatorCall(secondCall);
+        elevatorManagement.addElevatorCall(thirdCall);
+        elevatorManagement.addElevatorCall(fourthCall);
+        elevatorManagement.addElevatorCall(fifthCall);
+        // Optimal route should be: 11 -> 9 -> 8 -> 4 -> 3
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 11)
+                .hasFieldOrPropertyWithValue("targetLevel", 11);
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 9)
+                .hasFieldOrPropertyWithValue("targetLevel", 9);
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 8)
+                .hasFieldOrPropertyWithValue("targetLevel", 8);
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 4)
+                .hasFieldOrPropertyWithValue("targetLevel", 4);
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 3)
+                .hasFieldOrPropertyWithValue("targetLevel", 3);
+    }
+
+    @Test
+    public void elevatorGoDown_whenCallsAreTheSame_thenAlgorithmCalculatesOptimalRoute() {
+        elevatorManagement.getElevator().setCurrentLevel(14);
+        elevatorManagement.getElevator().setTargetLevel(14);
+
+        Call firstCall = new Call(1, 11, 3);
+        Call secondCall = new Call(1, 2, 4);
+        Call thirdCall = new Call(1, 11, 3);
+        Call fourthCall = new Call(1, 6, 9);
+        Call fifthCall = new Call(1, 11, 3);
+
+        elevatorManagement.addElevatorCall(firstCall);
+        elevatorManagement.addElevatorCall(secondCall);
+        elevatorManagement.addElevatorCall(thirdCall);
+        elevatorManagement.addElevatorCall(fourthCall);
+        elevatorManagement.addElevatorCall(fifthCall);
+        // Optimal route should be: 11 -> 3
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 11)
+                .hasFieldOrPropertyWithValue("targetLevel", 11);
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 3)
+                .hasFieldOrPropertyWithValue("targetLevel", 3);
+    }
 }

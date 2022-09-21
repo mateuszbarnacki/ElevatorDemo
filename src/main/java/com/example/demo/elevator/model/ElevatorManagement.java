@@ -56,7 +56,10 @@ public class ElevatorManagement {
             if (call != null) {
                 this.currentRoute.addAll(calculateOptimalRoute(call));
                 this.elevator.setTargetLevel(call.getLevel());
-                this.currentRoute.addLast(call.getTargetLevel());
+                this.currentRoute.removeIf(level -> level == call.getLevel());
+                if (!this.currentRoute.contains(call.getTargetLevel())) {
+                    this.currentRoute.addLast(call.getTargetLevel());
+                }
             } else {
                 return;
             }
@@ -101,7 +104,7 @@ public class ElevatorManagement {
     private List<Integer> calculateOptimalRouteDown(Call firstCall) {
         List<Call> copy = new ArrayList<>(this.elevatorCalls);
         List<Call> additionalStops = copy.stream()
-                .filter(directionFilterProvider.get(Direction.GO_DOWN))
+                .filter(this.directionFilterProvider.get(Direction.GO_DOWN))
                 .filter(call -> call.getLevel() <= firstCall.getLevel())
                 .filter(call -> call.getTargetLevel() >= firstCall.getTargetLevel())
                 .collect(Collectors.toList());
@@ -118,7 +121,7 @@ public class ElevatorManagement {
     private List<Integer> calculateOptimalRouteUp(Call firstCall) {
         List<Call> copy = new ArrayList<>(this.elevatorCalls);
         List<Call> additionalStops = copy.stream()
-                .filter(directionFilterProvider.get(Direction.GO_UP))
+                .filter(this.directionFilterProvider.get(Direction.GO_UP))
                 .filter(call -> call.getLevel() >= firstCall.getLevel())
                 .filter(call -> call.getTargetLevel() <= firstCall.getTargetLevel())
                 .collect(Collectors.toList());
