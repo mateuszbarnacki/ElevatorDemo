@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.elevator.exception.InvalidLevelException;
+import com.example.demo.elevator.exception.NotExistentElevatorException;
 import com.example.demo.elevator.model.Call;
 import com.example.demo.elevator.model.Elevator;
 import com.example.demo.elevator.model.ElevatorManagement;
@@ -31,7 +33,7 @@ public class ElevatorServiceTest {
     @Test
     public void whenCallHasSameLevelAndTargetLevel_thenPickupThrowsRuntimeException() {
         Call call = new Call(1, 13, 13);
-        Exception exception = Assert.assertThrows(RuntimeException.class, () -> elevatorService.pickup(call));
+        Exception exception = Assert.assertThrows(InvalidLevelException.class, () -> elevatorService.pickup(call));
 
         String expectedMessage = "Target level should not be the same as level!";
         String actualMessage = exception.getMessage();
@@ -42,7 +44,7 @@ public class ElevatorServiceTest {
     @Test
     public void whenCallHasInvalidElevatorId_thenPickupThrowsRuntimeException() {
         Call call = new Call(2, 4, 13);
-        Exception exception = Assert.assertThrows(RuntimeException.class, () -> elevatorService.pickup(call));
+        Exception exception = Assert.assertThrows(NotExistentElevatorException.class, () -> elevatorService.pickup(call));
 
         String expectedMessage = "Called elevator does not exists!";
         String actualMessage = exception.getMessage();
@@ -53,7 +55,7 @@ public class ElevatorServiceTest {
     @Test
     public void whenUpdateElevatorHasInvalidElevatorId_thenUpdateThrowsRuntimeException() {
         UpdateElevator updateElevator = new UpdateElevator(1, 1,1);
-        Exception exception = Assert.assertThrows(RuntimeException.class, () -> elevatorService.update(updateElevator));
+        Exception exception = Assert.assertThrows(NotExistentElevatorException.class, () -> elevatorService.update(updateElevator));
 
         String expectedMessage = "Could not update not existent elevator!";
         String actualMessage = exception.getMessage();
