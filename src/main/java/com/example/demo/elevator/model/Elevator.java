@@ -9,14 +9,12 @@ public class Elevator {
     private Direction currentDirection;
     private int currentLevel;
     private int targetLevel;
-    private boolean isWaiting;
 
     public Elevator(int id) {
         this.id = id;
         this.currentDirection = Direction.STAY;
         this.currentLevel = 0;
         this.targetLevel = 0;
-        this.isWaiting = true;
     }
 
     public int getId() {
@@ -44,16 +42,11 @@ public class Elevator {
     }
 
     public void move() {
-        if (this.isWaiting) {
-            this.isWaiting = false;
-            return;
-        }
         if (this.currentLevel != this.targetLevel) {
             this.currentDirection = this.targetLevel > this.currentLevel ? Direction.GO_UP : Direction.GO_DOWN;
             this.currentLevel += this.currentDirection.getValue();
         } else {
             this.currentDirection = Direction.STAY;
-            this.isWaiting = true;
         }
     }
 
