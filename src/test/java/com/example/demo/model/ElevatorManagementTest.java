@@ -695,4 +695,45 @@ public class ElevatorManagementTest {
                 .hasFieldOrPropertyWithValue("currentLevel", 3)
                 .hasFieldOrPropertyWithValue("targetLevel", 3);
     }
+
+    @Test
+    public void elevatorGoUp_whenCallsAreTheSame_thenAlgorithmCalculatesOptimalRoute() {
+        elevatorManagement.getElevator().setCurrentLevel(0);
+        elevatorManagement.getElevator().setTargetLevel(0);
+
+        Call firstCall = new Call(1, 2, 13);
+        Call secondCall = new Call(1, 9, 4);
+        Call thirdCall = new Call(1, 2, 13);
+        Call fourthCall = new Call(1, 13, 4);
+        Call fifthCall = new Call(1, 2, 13);
+
+        elevatorManagement.addElevatorCall(firstCall);
+        elevatorManagement.addElevatorCall(secondCall);
+        elevatorManagement.addElevatorCall(thirdCall);
+        elevatorManagement.addElevatorCall(fourthCall);
+        elevatorManagement.addElevatorCall(fifthCall);
+        // Optimal route should be: 2 -> 13
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 2)
+                .hasFieldOrPropertyWithValue("targetLevel", 2);
+
+        elevatorManagement.move();
+        while (!elevatorManagement.getElevator().getCurrentDirection().equals(Direction.STAY)) {
+            elevatorManagement.move();
+        }
+
+        AssertionsForClassTypes.assertThat(elevatorManagement.getElevator())
+                .hasFieldOrPropertyWithValue("id", 1)
+                .hasFieldOrPropertyWithValue("currentDirection", Direction.STAY)
+                .hasFieldOrPropertyWithValue("currentLevel", 13)
+                .hasFieldOrPropertyWithValue("targetLevel", 13);
+    }
 }
