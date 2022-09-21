@@ -50,6 +50,10 @@ public class ElevatorManagement {
         return this.currentRoute.getLast();
     }
 
+    public boolean isRouteExist() {
+        return !this.currentRoute.isEmpty();
+    }
+
     public void move() {
         if (this.currentRoute.isEmpty() && this.elevator.getCurrentDirection().equals(Direction.STAY)) {
             Call call = this.elevatorCalls.pollFirst();

@@ -1,5 +1,6 @@
 package com.example.demo.elevator.service.impl;
 
+import com.example.demo.elevator.common.Direction;
 import com.example.demo.elevator.exception.InvalidLevelException;
 import com.example.demo.elevator.exception.NotExistentElevatorException;
 import com.example.demo.elevator.model.Call;
@@ -38,6 +39,7 @@ public class ElevatorServiceImpl implements ElevatorService {
         Elevator toUpdate = elevatorMap.get(elevatorId).getElevator();
         toUpdate.setCurrentLevel(updateData.getCurrentLevel());
         toUpdate.setTargetLevel(updateData.getTargetLevel());
+        toUpdate.setCurrentDirection(Direction.STAY);
         elevatorMap.get(elevatorId).clearElevatorCallsAndRoute();
 
         return elevatorMap.get(elevatorId)
@@ -72,8 +74,8 @@ public class ElevatorServiceImpl implements ElevatorService {
     }
 
     private boolean shouldElevatorStopForPassenger(Call call, Elevator elevator) {
-        return shouldElevatorStopWhileGoingDown(call, elevator) ||
-                shouldElevatorStopWhileGoingUp(call, elevator);
+        return elevatorMap.get(elevator.getId()).isRouteExist() &&
+                (shouldElevatorStopWhileGoingDown(call, elevator) || shouldElevatorStopWhileGoingUp(call, elevator));
     }
 
     private boolean shouldElevatorStopWhileGoingDown(Call call, Elevator elevator) {

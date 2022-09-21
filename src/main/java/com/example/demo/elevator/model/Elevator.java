@@ -25,6 +25,10 @@ public class Elevator {
         return this.currentDirection;
     }
 
+    public void setCurrentDirection(Direction direction) {
+        this.currentDirection = direction;
+    }
+
     public int getCurrentLevel() {
         return this.currentLevel;
     }

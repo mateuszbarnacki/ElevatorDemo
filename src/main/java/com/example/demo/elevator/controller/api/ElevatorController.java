@@ -23,6 +23,7 @@ public interface ElevatorController {
     @ApiOperation(value = "Make a call for the selected elevator",
             notes = "Method consumes JSON which contains selected elevator id, passenger level and target level.")
     @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 201, message = "Call added successfully"),
             @ApiResponse(code = 400, message = "Invalid call"),
             @ApiResponse(code = 500, message = "Server crashed")})
