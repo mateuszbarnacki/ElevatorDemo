@@ -17,10 +17,7 @@ public class ElevatorManagement {
     private final LinkedList<Call> elevatorCalls;
     private final LinkedList<Integer> currentRoute;
     private final Map<Direction, Comparator<Integer>> comparatorProvider;
-    private final Map<Direction, Predicate<Call>> directionFilterProvider = ImmutableMap.<Direction, Predicate<Call>>builder()
-            .put(Direction.GO_UP, call -> call.getTargetLevel() > call.getLevel())
-            .put(Direction.GO_DOWN, call -> call.getTargetLevel() < call.getLevel())
-            .build();
+    private final Map<Direction, Predicate<Call>> directionFilterProvider;
 
     public ElevatorManagement(int id) {
         this.elevator = new Elevator(id);
@@ -29,6 +26,10 @@ public class ElevatorManagement {
         this.comparatorProvider = ImmutableMap.<Direction, Comparator<Integer>>builder()
                 .put(Direction.GO_UP, Comparator.naturalOrder())
                 .put(Direction.GO_DOWN, Comparator.reverseOrder())
+                .build();
+        this.directionFilterProvider = ImmutableMap.<Direction, Predicate<Call>>builder()
+                .put(Direction.GO_UP, call -> call.getTargetLevel() > call.getLevel())
+                .put(Direction.GO_DOWN, call -> call.getTargetLevel() < call.getLevel())
                 .build();
     }
 
@@ -43,6 +44,10 @@ public class ElevatorManagement {
     public void clearElevatorCallsAndRoute() {
         this.elevatorCalls.clear();
         this.currentRoute.clear();
+    }
+
+    public int getRouteTargetLevel() {
+        return this.currentRoute.getLast();
     }
 
     public void move() {
@@ -67,11 +72,24 @@ public class ElevatorManagement {
     }
 
     public void addCallToCurrentRoute(Call call) {
+        if (!this.elevator.getCurrentDirection().equals(Direction.STAY)) {
+            this.currentRoute.addFirst(this.elevator.getTargetLevel());
+        }
+        addCallLevels(call);
+        Direction callDirection = call.getTargetLevel() > call.getLevel() ? Direction.GO_UP : Direction.GO_DOWN;
+        this.currentRoute.sort(this.comparatorProvider.get(callDirection));
+        this.elevator.setTargetLevel(this.currentRoute.getFirst());
+        if (!this.elevator.getCurrentDirection().equals(Direction.STAY)) {
+            this.currentRoute.removeFirst();
+        }
+    }
+
+    private void addCallLevels(Call call) {
         if (!this.currentRoute.contains(call.getLevel())) {
-            this.currentRoute.addFirst(call.getLevel());
+            this.currentRoute.addLast(call.getLevel());
         }
         if (!this.currentRoute.contains(call.getTargetLevel())) {
-            this.currentRoute.addFirst(call.getTargetLevel());
+            this.currentRoute.addLast(call.getTargetLevel());
         }
     }
 

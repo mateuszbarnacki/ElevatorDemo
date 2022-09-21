@@ -1,6 +1,5 @@
 package com.example.demo.elevator.service.impl;
 
-import com.example.demo.elevator.common.Direction;
 import com.example.demo.elevator.exception.InvalidLevelException;
 import com.example.demo.elevator.exception.NotExistentElevatorException;
 import com.example.demo.elevator.model.Call;
@@ -24,7 +23,7 @@ public class ElevatorServiceImpl implements ElevatorService {
         validateCall(call);
         int elevatorId = call.getElevatorId();
         Elevator elevator = elevatorMap.get(elevatorId).getElevator();
-        if (shouldElevatorStop(call, elevator)) {
+        if (shouldElevatorStopForPassenger(call, elevator)) {
             elevatorMap.get(elevatorId).addCallToCurrentRoute(call);
         } else {
             elevatorMap.get(elevatorId).addElevatorCall(call);
@@ -57,7 +56,6 @@ public class ElevatorServiceImpl implements ElevatorService {
                 .collect(Collectors.toList());
     }
 
-
     private void validateCall(Call callDTO) {
         if (callDTO.getLevel() == callDTO.getTargetLevel()) {
             throw new InvalidLevelException("Target level should not be the same as level!");
@@ -73,26 +71,21 @@ public class ElevatorServiceImpl implements ElevatorService {
         }
     }
 
-    private Direction getCallDirection(Call callDTO) {
-        return callDTO.getTargetLevel() > callDTO.getLevel() ? Direction.GO_UP : Direction.GO_DOWN;
+    private boolean shouldElevatorStopForPassenger(Call call, Elevator elevator) {
+        return shouldElevatorStopWhileGoingDown(call, elevator) ||
+                shouldElevatorStopWhileGoingUp(call, elevator);
     }
 
-    private boolean shouldElevatorStop(Call call, Elevator elevator) {
-        Direction callDirection = getCallDirection(call);
-        return shouldElevatorStopWhileGoingDown(call, elevator, callDirection) ||
-                shouldElevatorStopWhileGoingUp(call, elevator, callDirection);
-    }
-
-    private boolean shouldElevatorStopWhileGoingDown(Call call, Elevator elevator, Direction callDirection) {
-        return Direction.GO_DOWN.equals(callDirection) &&
+    private boolean shouldElevatorStopWhileGoingDown(Call call, Elevator elevator) {
+        return call.getTargetLevel() < call.getLevel() &&
                 call.getLevel() < elevator.getCurrentLevel() &&
-                call.getTargetLevel() >= elevator.getTargetLevel();
+                call.getTargetLevel() >= elevatorMap.get(elevator.getId()).getRouteTargetLevel();
     }
 
-    private boolean shouldElevatorStopWhileGoingUp(Call call, Elevator elevator, Direction callDirection) {
-        return Direction.GO_UP.equals(callDirection) &&
+    private boolean shouldElevatorStopWhileGoingUp(Call call, Elevator elevator) {
+        return call.getTargetLevel() > call.getLevel() &&
                 call.getLevel() > elevator.getCurrentLevel() &&
-                call.getTargetLevel() <= elevator.getTargetLevel();
+                call.getTargetLevel() <= elevatorMap.get(elevator.getId()).getRouteTargetLevel();
     }
 
 }
