@@ -28,9 +28,12 @@ public class ElevatorServiceImpl implements ElevatorService {
     public Elevator update(UpdateElevator updateData) {
         validateDataToUpdate(updateData);
         int elevatorId = updateData.getId();
+
         Elevator toUpdate = elevatorMap.get(elevatorId).getElevator();
         toUpdate.setCurrentLevel(updateData.getCurrentLevel());
         toUpdate.setTargetLevel(updateData.getTargetLevel());
+        elevatorMap.get(elevatorId).clearElevatorCallsAndRoute();
+
         return elevatorMap.get(elevatorId)
                 .getElevator();
     }

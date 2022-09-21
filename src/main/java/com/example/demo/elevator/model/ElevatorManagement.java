@@ -40,6 +40,11 @@ public class ElevatorManagement {
         this.elevatorCalls.addLast(call);
     }
 
+    public void clearElevatorCallsAndRoute() {
+        this.elevatorCalls.clear();
+        this.currentRoute.clear();
+    }
+
     public void move() {
         if (this.currentRoute.isEmpty() && this.elevator.getCurrentDirection().equals(Direction.STAY)) {
             Call call = this.elevatorCalls.pollFirst();
