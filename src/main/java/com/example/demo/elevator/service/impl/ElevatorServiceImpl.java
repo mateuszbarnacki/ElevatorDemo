@@ -1,11 +1,10 @@
 package com.example.demo.elevator.service.impl;
 
-import com.example.demo.elevator.common.Direction;
 import com.example.demo.elevator.exception.InvalidLevelException;
 import com.example.demo.elevator.exception.NotExistentElevatorException;
 import com.example.demo.elevator.model.Call;
-import com.example.demo.elevator.model.Elevator;
-import com.example.demo.elevator.model.ElevatorManagement;
+import com.example.demo.elevator.model.ElevatorData;
+import com.example.demo.elevator.model.impl.ElevatorManagementImpl;
 import com.example.demo.elevator.model.UpdateElevator;
 import com.example.demo.elevator.store.DataStore;
 import com.example.demo.elevator.service.api.ElevatorService;
@@ -17,14 +16,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class ElevatorServiceImpl implements ElevatorService {
-    private final Map<Integer, ElevatorManagement> elevatorMap = DataStore.getInstance();
+    private final Map<Integer, ElevatorManagementImpl> elevatorMap = DataStore.getInstance();
 
     @Override
     public void pickup(Call call) {
         validateCall(call);
         int elevatorId = call.getElevatorId();
-        Elevator elevator = elevatorMap.get(elevatorId).getElevator();
-        if (shouldElevatorStopForPassenger(call, elevator)) {
+        if (shouldElevatorStopForPassenger(call)) {
             elevatorMap.get(elevatorId).addCallToCurrentRoute(call);
         } else {
             elevatorMap.get(elevatorId).addElevatorCall(call);
@@ -32,29 +30,22 @@ public class ElevatorServiceImpl implements ElevatorService {
     }
 
     @Override
-    public Elevator update(UpdateElevator updateData) {
+    public ElevatorData update(UpdateElevator updateData) {
         validateDataToUpdate(updateData);
         int elevatorId = updateData.getId();
-
-        Elevator toUpdate = elevatorMap.get(elevatorId).getElevator();
-        toUpdate.setCurrentLevel(updateData.getCurrentLevel());
-        toUpdate.setTargetLevel(updateData.getTargetLevel());
-        toUpdate.setCurrentDirection(Direction.STAY);
-        elevatorMap.get(elevatorId).clearElevatorCallsAndRoute();
-
         return elevatorMap.get(elevatorId)
-                .getElevator();
+                .updateElevator(updateData);
     }
 
     @Override
     public void step() {
-        elevatorMap.values().forEach(ElevatorManagement::move);
+        elevatorMap.values().forEach(ElevatorManagementImpl::move);
     }
 
     @Override
-    public List<Elevator> status() {
+    public List<ElevatorData> status() {
         return elevatorMap.values().stream()
-                .map(ElevatorManagement::getElevator)
+                .map(ElevatorManagementImpl::getElevatorData)
                 .collect(Collectors.toList());
     }
 
@@ -73,21 +64,21 @@ public class ElevatorServiceImpl implements ElevatorService {
         }
     }
 
-    private boolean shouldElevatorStopForPassenger(Call call, Elevator elevator) {
-        return elevatorMap.get(elevator.getId()).isRouteExist() &&
-                (shouldElevatorStopWhileGoingDown(call, elevator) || shouldElevatorStopWhileGoingUp(call, elevator));
+    private boolean shouldElevatorStopForPassenger(Call call) {
+        return elevatorMap.get(call.getElevatorId()).isRouteExist() &&
+                (shouldElevatorStopWhileGoingDown(call) || shouldElevatorStopWhileGoingUp(call));
     }
 
-    private boolean shouldElevatorStopWhileGoingDown(Call call, Elevator elevator) {
+    private boolean shouldElevatorStopWhileGoingDown(Call call) {
         return call.getTargetLevel() < call.getLevel() &&
-                call.getLevel() < elevator.getCurrentLevel() &&
-                call.getTargetLevel() >= elevatorMap.get(elevator.getId()).getRouteTargetLevel();
+                call.getLevel() < elevatorMap.get(call.getElevatorId()).getCurrentElevatorLevel() &&
+                call.getTargetLevel() >= elevatorMap.get(call.getElevatorId()).getRouteTargetLevel();
     }
 
-    private boolean shouldElevatorStopWhileGoingUp(Call call, Elevator elevator) {
+    private boolean shouldElevatorStopWhileGoingUp(Call call) {
         return call.getTargetLevel() > call.getLevel() &&
-                call.getLevel() > elevator.getCurrentLevel() &&
-                call.getTargetLevel() <= elevatorMap.get(elevator.getId()).getRouteTargetLevel();
+                call.getLevel() > elevatorMap.get(call.getElevatorId()).getCurrentElevatorLevel() &&
+                call.getTargetLevel() <= elevatorMap.get(call.getElevatorId()).getRouteTargetLevel();
     }
 
 }

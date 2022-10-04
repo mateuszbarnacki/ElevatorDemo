@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.elevator.model.ElevatorManagement;
+import com.example.demo.elevator.model.impl.ElevatorManagementImpl;
 import com.example.demo.elevator.store.DataStore;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -39,9 +39,9 @@ public class DemoApplication {
     }
 
     private static void initializeElevatorRepository(int numberOfElevators) {
-        Map<Integer, ElevatorManagement> elevatorMap = DataStore.getInstance();
+        Map<Integer, ElevatorManagementImpl> elevatorMap = DataStore.getInstance();
         IntStream.rangeClosed(1, numberOfElevators)
-                .forEach(number -> elevatorMap.put(number, new ElevatorManagement(number)));
+                .forEach(number -> elevatorMap.put(number, new ElevatorManagementImpl(number)));
     }
 
 }

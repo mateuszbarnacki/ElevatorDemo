@@ -2,7 +2,7 @@ package com.example.demo.elevator.controller.impl;
 
 import com.example.demo.elevator.controller.api.ElevatorController;
 import com.example.demo.elevator.model.Call;
-import com.example.demo.elevator.model.Elevator;
+import com.example.demo.elevator.model.ElevatorData;
 import com.example.demo.elevator.model.UpdateElevator;
 import com.example.demo.elevator.service.api.ElevatorService;
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ public class ElevatorControllerImpl implements ElevatorController {
     }
 
     @Override
-    public ResponseEntity<Elevator> updateElevatorState(UpdateElevator newData) {
+    public ResponseEntity<ElevatorData> updateElevatorState(UpdateElevator newData) {
         return ResponseEntity.ok(service.update(newData));
     }
 
@@ -35,7 +35,7 @@ public class ElevatorControllerImpl implements ElevatorController {
     }
 
     @Override
-    public ResponseEntity<List<Elevator>> status() {
+    public ResponseEntity<List<ElevatorData>> status() {
         return ResponseEntity.ok(service.status());
     }
 

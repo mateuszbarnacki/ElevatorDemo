@@ -3,8 +3,8 @@ package com.example.demo.service;
 import com.example.demo.elevator.exception.InvalidLevelException;
 import com.example.demo.elevator.exception.NotExistentElevatorException;
 import com.example.demo.elevator.model.Call;
-import com.example.demo.elevator.model.Elevator;
-import com.example.demo.elevator.model.ElevatorManagement;
+import com.example.demo.elevator.model.ElevatorData;
+import com.example.demo.elevator.model.impl.ElevatorManagementImpl;
 import com.example.demo.elevator.model.UpdateElevator;
 import com.example.demo.elevator.service.api.ElevatorService;
 import org.junit.Assert;
@@ -28,7 +28,7 @@ public class ElevatorServiceTest {
     private ElevatorService elevatorService;
 
     @Mock
-    private Map<Integer, ElevatorManagement> elevatorMap;
+    private Map<Integer, ElevatorManagementImpl> elevatorMap;
 
     @Test
     public void whenCallHasSameLevelAndTargetLevel_thenPickupThrowsRuntimeException() {
@@ -66,7 +66,7 @@ public class ElevatorServiceTest {
     @Test
     public void statusShouldReturnOneElement() {
         ReflectionTestUtils.setField(elevatorService, "elevatorMap", elevatorMap);
-        Mockito.when(elevatorMap.values()).thenReturn(List.of(new ElevatorManagement(1)));
+        Mockito.when(elevatorMap.values()).thenReturn(List.of(new ElevatorManagementImpl(1)));
 
         int statusListSize = elevatorService.status().size();
         Assert.assertEquals(1, statusListSize);
@@ -75,11 +75,11 @@ public class ElevatorServiceTest {
     @Test
     public void statusShouldReturnElevatorWithIdEqualsOne() {
         ReflectionTestUtils.setField(elevatorService, "elevatorMap", elevatorMap);
-        Mockito.when(elevatorMap.values()).thenReturn(List.of(new ElevatorManagement(1)));
+        Mockito.when(elevatorMap.values()).thenReturn(List.of(new ElevatorManagementImpl(1)));
 
         int elevatorId = elevatorService.status().stream()
                 .findFirst()
-                .map(Elevator::getId)
+                .map(ElevatorData::getId)
                 .orElse(-1);
         Assert.assertEquals(1, elevatorId);
     }

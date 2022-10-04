@@ -1,7 +1,7 @@
 package com.example.demo.elevator.service.api;
 
 import com.example.demo.elevator.model.Call;
-import com.example.demo.elevator.model.Elevator;
+import com.example.demo.elevator.model.ElevatorData;
 import com.example.demo.elevator.model.UpdateElevator;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public interface ElevatorService {
      * @param newData An object with updated parameters.
      * @return An object after update.
      */
-    Elevator update(UpdateElevator newData);
+    ElevatorData update(UpdateElevator newData);
 
     /**
      * This method perform a single step of the animation.
@@ -34,6 +34,6 @@ public interface ElevatorService {
      *
      * @return List which contains the state of each elevator.
      */
-    List<Elevator> status();
+    List<ElevatorData> status();
 
 }

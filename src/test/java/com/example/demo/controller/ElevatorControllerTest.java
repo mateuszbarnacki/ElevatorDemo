@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.elevator.controller.impl.ElevatorControllerImpl;
 import com.example.demo.elevator.model.Call;
-import com.example.demo.elevator.model.Elevator;
+import com.example.demo.elevator.model.ElevatorData;
 import com.example.demo.elevator.model.UpdateElevator;
 import com.example.demo.elevator.service.impl.ElevatorServiceImpl;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -83,9 +83,11 @@ public class ElevatorControllerTest {
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         String json = mapper.writeValueAsString(object);
 
-        Elevator elevator = new Elevator(1);
-        elevator.setCurrentLevel(13);
-        elevator.setTargetLevel(4);
+        ElevatorData elevator = ElevatorData.builder()
+                .id(1)
+                .currentLevel(13)
+                .targetLevel(4)
+                .build();
 
         Mockito.when(service.update(ArgumentMatchers.any(UpdateElevator.class))).thenReturn(elevator);
 
@@ -123,7 +125,7 @@ public class ElevatorControllerTest {
 
     @Test
     public void shouldReturnStatus() throws Exception {
-        Mockito.when(service.status()).thenReturn(List.of(new Elevator(1)));
+        Mockito.when(service.status()).thenReturn(List.of(ElevatorData.builder().id(1).build()));
 
         mvc.perform(MockMvcRequestBuilders.get("/elevator"))
                 .andExpect(MockMvcResultMatchers.status().isOk())

@@ -1,7 +1,7 @@
 package com.example.demo.elevator.controller.api;
 
 import com.example.demo.elevator.model.Call;
-import com.example.demo.elevator.model.Elevator;
+import com.example.demo.elevator.model.ElevatorData;
 import com.example.demo.elevator.model.UpdateElevator;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -37,7 +37,7 @@ public interface ElevatorController {
             @ApiResponse(code = 200, message = "Elevator updated successfully"),
             @ApiResponse(code = 400, message = "Invalid JSON"),
             @ApiResponse(code = 500, message = "Server crashed")})
-    ResponseEntity<Elevator> updateElevatorState(@RequestBody UpdateElevator newData);
+    ResponseEntity<ElevatorData> updateElevatorState(@RequestBody UpdateElevator newData);
 
     @PutMapping("/step")
     @ApiOperation(value = "Perform simulation step", notes = "Method moves each elevator")
@@ -52,6 +52,6 @@ public interface ElevatorController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Status returned successfully"),
             @ApiResponse(code = 500, message = "Server crashed")})
-    ResponseEntity<List<Elevator>> status();
+    ResponseEntity<List<ElevatorData>> status();
 
 }
