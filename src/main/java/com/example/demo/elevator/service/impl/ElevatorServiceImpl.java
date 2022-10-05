@@ -4,7 +4,7 @@ import com.example.demo.elevator.exception.InvalidLevelException;
 import com.example.demo.elevator.exception.NotExistentElevatorException;
 import com.example.demo.elevator.model.Call;
 import com.example.demo.elevator.model.ElevatorData;
-import com.example.demo.elevator.model.impl.ElevatorManagementImpl;
+import com.example.demo.elevator.model.api.ElevatorManagement;
 import com.example.demo.elevator.model.UpdateElevator;
 import com.example.demo.elevator.store.DataStore;
 import com.example.demo.elevator.service.api.ElevatorService;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ElevatorServiceImpl implements ElevatorService {
-    private final Map<Integer, ElevatorManagementImpl> elevatorMap = DataStore.getInstance();
+    private final Map<Integer, ElevatorManagement> elevatorMap = DataStore.getInstance();
 
     @Override
     public void pickup(Call call) {
@@ -39,13 +39,13 @@ public class ElevatorServiceImpl implements ElevatorService {
 
     @Override
     public void step() {
-        elevatorMap.values().forEach(ElevatorManagementImpl::move);
+        elevatorMap.values().forEach(ElevatorManagement::move);
     }
 
     @Override
     public List<ElevatorData> status() {
         return elevatorMap.values().stream()
-                .map(ElevatorManagementImpl::getElevatorData)
+                .map(ElevatorManagement::getElevatorData)
                 .collect(Collectors.toList());
     }
 

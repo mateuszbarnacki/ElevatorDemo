@@ -4,6 +4,7 @@ import com.example.demo.elevator.exception.InvalidLevelException;
 import com.example.demo.elevator.exception.NotExistentElevatorException;
 import com.example.demo.elevator.model.Call;
 import com.example.demo.elevator.model.ElevatorData;
+import com.example.demo.elevator.model.api.ElevatorManagement;
 import com.example.demo.elevator.model.impl.ElevatorManagementImpl;
 import com.example.demo.elevator.model.UpdateElevator;
 import com.example.demo.elevator.service.api.ElevatorService;
@@ -28,7 +29,7 @@ public class ElevatorServiceTest {
     private ElevatorService elevatorService;
 
     @Mock
-    private Map<Integer, ElevatorManagementImpl> elevatorMap;
+    private Map<Integer, ElevatorManagement> elevatorMap;
 
     @Test
     public void whenCallHasSameLevelAndTargetLevel_thenPickupThrowsRuntimeException() {

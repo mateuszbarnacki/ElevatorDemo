@@ -3,6 +3,7 @@ package com.example.demo.model;
 import com.example.demo.elevator.common.Direction;
 import com.example.demo.elevator.model.Call;
 import com.example.demo.elevator.model.UpdateElevator;
+import com.example.demo.elevator.model.api.ElevatorManagement;
 import com.example.demo.elevator.model.impl.ElevatorManagementImpl;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 public class ElevatorManagementImplTest {
-    private final ElevatorManagementImpl elevatorManagement = new ElevatorManagementImpl(1);
+    private final ElevatorManagement elevatorManagement = new ElevatorManagementImpl(1);
 
     @Test
     public void shouldElevatorPickupPassengerFromFourthLevelAndGoUpToThirteenLevel() {
