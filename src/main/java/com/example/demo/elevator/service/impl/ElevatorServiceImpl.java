@@ -8,6 +8,8 @@ import com.example.demo.elevator.model.api.ElevatorManagement;
 import com.example.demo.elevator.model.UpdateElevator;
 import com.example.demo.elevator.store.DataStore;
 import com.example.demo.elevator.service.api.ElevatorService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class ElevatorServiceImpl implements ElevatorService {
     private final Map<Integer, ElevatorManagement> elevatorMap = DataStore.getInstance();
+    private final Logger logger = LoggerFactory.getLogger(ElevatorServiceImpl.class);
 
     @Override
     public void pickup(Call call) {
@@ -51,15 +54,18 @@ public class ElevatorServiceImpl implements ElevatorService {
 
     private void validateCall(Call callDTO) {
         if (callDTO.getLevel() == callDTO.getTargetLevel()) {
+            logger.error("Target level should not be the same as level!");
             throw new InvalidLevelException("Target level should not be the same as level!");
         }
         if (callDTO.getElevatorId() < 1 || callDTO.getElevatorId() > elevatorMap.size()) {
+            logger.error("Called elevator does not exists!");
             throw new NotExistentElevatorException("Called elevator does not exists!");
         }
     }
 
     private void validateDataToUpdate(UpdateElevator updateElevator) {
         if (updateElevator.getId() < 1 || updateElevator.getId() > elevatorMap.size()) {
+            logger.error("Could not update not existent elevator!");
             throw new NotExistentElevatorException("Could not update not existent elevator!");
         }
     }

@@ -39,7 +39,7 @@ public class ElevatorServiceTest {
         String expectedMessage = "Target level should not be the same as level!";
         String actualMessage = exception.getMessage();
 
-        Assert.assertEquals(actualMessage, expectedMessage);
+        Assert.assertEquals(expectedMessage, actualMessage);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class ElevatorServiceTest {
         String expectedMessage = "Called elevator does not exists!";
         String actualMessage = exception.getMessage();
 
-        Assert.assertEquals(actualMessage, expectedMessage);
+        Assert.assertEquals(expectedMessage, actualMessage);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class ElevatorServiceTest {
         String expectedMessage = "Could not update not existent elevator!";
         String actualMessage = exception.getMessage();
 
-        Assert.assertEquals(actualMessage, expectedMessage);
+        Assert.assertEquals(expectedMessage, actualMessage);
     }
 
     @Test

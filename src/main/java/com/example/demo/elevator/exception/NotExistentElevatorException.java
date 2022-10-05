@@ -1,7 +1,9 @@
 package com.example.demo.elevator.exception;
 
-public class NotExistentElevatorException extends RuntimeException {
+import com.example.demo.elevator.exception.handler.ErrorCode;
+
+public class NotExistentElevatorException extends ElevatorRestException {
     public NotExistentElevatorException(String message) {
-        super(message);
+        super(message, ErrorCode.NOT_FOUND);
     }
 }

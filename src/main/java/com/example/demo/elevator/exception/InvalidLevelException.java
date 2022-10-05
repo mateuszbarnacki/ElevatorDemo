@@ -1,7 +1,9 @@
 package com.example.demo.elevator.exception;
 
-public class InvalidLevelException extends RuntimeException {
+import com.example.demo.elevator.exception.handler.ErrorCode;
+
+public class InvalidLevelException extends ElevatorRestException {
     public InvalidLevelException(String message) {
-        super(message);
+        super(message, ErrorCode.BAD_REQUEST);
     }
 }
